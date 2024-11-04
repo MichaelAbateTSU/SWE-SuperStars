@@ -1,0 +1,45 @@
+body {
+  font-family: Arial, sans-serif;
+}
+.top-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+input[type="text"] {
+  padding: 10px;
+  width: 250px;
+  font-size: 16px;
+}
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
+.results {
+  margin-top: 20px;
+}
+.grid-container {
+display: grid;
+width: 600px;
+grid-template-columns: repeat(2, 1fr);
+grid-template-rows: repeat(9, 1fr);
+gap: 1px;
+}
+.grid-item {
+padding: 20px;
+font-size: 20px;
+text-align: center;
+border: 1px solid black;
+}
+.submit-button {
+align-self: flex-end;
+padding: 30px;
+padding-right: 400px;
+}
+.submit-button button {
+background-color: black;
+color: white;
+}
