@@ -1,10 +1,14 @@
 { "students": [  {
   "id": 1,
-  "first_name": "Bobbi",
-  "last_name": "Kett",
-  "email": "bkett0@chron.com",
-  "gender": "Female",
-  "degree_classification": "Undergraduate",
-  "degree_program": "Computer Science"
+  "first_name": "Mike",
+  "last_name": "Jones",
+  "email": "mjones@gmail.com",
+  "phone": "281-330-8004",
+  "role_summary": "Cyber Security Specialist",
+  "employers": "Bank Of America, March 2014-October 2015, Junior Analyst, Analyzed data, Houston Texas; McDonalds, December 2022-April 2026, Senior Frycook, Putting fries in the bag, Houston Texas  ",
+  "skills": "python",
+  "desired_locations": "Dallas",
+  "education_history": "Everest College, Masters, Fall 1992-Spring 1997"
 }
-]}
+]
+}
