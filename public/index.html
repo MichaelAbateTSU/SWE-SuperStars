@@ -1,58 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <title>Student Search</title>
   <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:,">
 </head>
-  <body>
-    <div class="top-container">
-      <h1> Edit Student </h1>
-      <div class="grid-container">
-        <!-- Title and Input for First Name -->
-        <div class="grid-item" id="first-name-label">First Name:</div>
-        <input type="text" class="grid-item" id="first-name-input">
 
-        <!-- Title and Input for Last Name -->
-        <div class="grid-item" id="last-name-label">Last Name:</div>
-        <input type="text" class="grid-item" id="last-name-input">
+<body>
+  <div class="top-container">
+    <h1> Edit Student </h1>
+    <div class="grid-container">
+      <!-- Title and Input for First Name -->
+      <div class="grid-item" id="first-name-label">First Name:</div>
+      <input type="text" class="grid-item" id="first-name-input">
 
-        <!-- Email Title and Input with Error Message -->
-        <div class="grid-item">
-          <div id="email-label">Email:</div>
-          <div class="error-message" id="email-error" style="color: red; display: none; font-size: x-small;"></div>
-        </div>
-        <input type="text" class="grid-item" id="email-input">
+      <!-- Title and Input for Last Name -->
+      <div class="grid-item" id="last-name-label">Last Name:</div>
+      <input type="text" class="grid-item" id="last-name-input">
 
-        <!-- Phone Number -->
-        <div class="grid-item" id="phone-number-label">Phone Number:</div>
-        <input type="text" class="grid-item" id="phone-number-input">
-
-        <!-- Role Summary -->
-        <div class="grid-item" id="role-summary-label">Role Summary:</div>
-        <input type="text" class="grid-item" id="role-summary-input">
-
-        <!-- Employment Info (Textarea) -->
-        <div class="grid-item" id="employment-info-label">Employment Info:</div>
-        <textarea class="grid-item" id="employment-info-input"></textarea>
-
-        <!-- Desired Location -->
-        <div class="grid-item" id="desired-location-label">Desired Location:</div>
-        <input type="text" class="grid-item" id="desired-location-input">
-
-        <!-- Skills -->
-        <div class="grid-item" id="skills-label">Skills:</div>
-        <input type="text" class="grid-item" id="skills-input">
-
-        <!-- Education History -->
-        <div class="grid-item" id="education-history-label">Education History:</div>
-        <textarea class="grid-item" id="education-history-input"></textarea>
+      <!-- Email Title and Input with Error Message -->
+      <div class="grid-item">
+        <div id="email-label">Email:</div>
+        <div class="error-message" id="email-error" style="display: none;"></div>
       </div>
+      <input type="text" class="grid-item" id="email-input">
 
-      <div class="submit-button">
-        <button type="submit">Submit Changes</button>
-      </div>
+      <!-- Phone Number -->
+      <div class="grid-item" id="phone-number-label">Phone Number:</div>
+      <input type="text" class="grid-item" id="phone-number-input">
+
+      <!-- Role Summary -->
+      <div class="grid-item" id="role-summary-label">Role Summary:</div>
+      <input type="text" class="grid-item" id="role-summary-input">
+
+      <!-- Employment Info -->
+      <div class="grid-item" id="employment-info-label">Employment Info:</div>
+      <textarea class="grid-item" id="employment-info-input"></textarea>
+
+      <!-- Desired Location -->
+      <div class="grid-item" id="desired-location-label">Desired Location:</div>
+      <input type="text" class="grid-item" id="desired-location-input">
+
+      <!-- Skills -->
+      <div class="grid-item" id="skills-label">Skills:</div>
+      <input type="text" class="grid-item" id="skills-input">
+
+      <!-- Education History -->
+      <div class="grid-item" id="education-history-label">Education History:</div>
+      <textarea class="grid-item" id="education-history-input"></textarea>
     </div>
 
-    <script src="script.js"></script>
-  </body>
+    <div class="submit-button">
+      <button type="submit">Submit Changes</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
 </html>

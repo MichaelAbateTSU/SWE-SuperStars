@@ -15,22 +15,31 @@ body {
   align-self: center;
 }
 
-.top-container div {
-  width: 200px;
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
+  width: 50%;
+  margin-left: 150px;
+}
+
+.grid-item {
+  padding: 10px;
+  font-size: 16px;
+  text-align: left;
 }
 
 input[type="text"],
 textarea {
   padding: 10px;
   font-size: 16px;
-  width: 300px;           
-  box-sizing: border-box;     
+  width: 100%;
+  box-sizing: border-box;
 }
 
 textarea {
-  width: 300px;
-  height: 200px;           
-  resize: vertical;          
+  height: 200px;
+  resize: vertical;
   white-space: pre-wrap;
   word-wrap: break-word;
 }
@@ -39,25 +48,6 @@ button {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
-}
-
-.results {
-  margin-top: 20px;
-}
-
-.grid-container {
-  display: grid;
-  width: 100%;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(9, auto);
-  gap: 10px;
-}
-
-.grid-item {
-  padding: 20px;
-  font-size: 16px;
-  text-align: left;
-  border: 1px solid black;
 }
 
 .submit-button {
@@ -70,4 +60,12 @@ button {
 .submit-button button {
   background-color: black;
   color: white;
+}
+
+.error-message {
+  color: red;
+  font-weight: normal;
+  font-size: x-small;
+  padding: 10px;
+  padding-left: 0px;
 }
