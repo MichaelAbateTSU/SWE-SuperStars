@@ -1,5 +1,8 @@
 document.addEventListener("DOMContentLoaded", async () => {
     await loadStudentData();
+    
+    // Add event listener for the email field to validate on input
+    document.getElementById("email-input").addEventListener("input", validateEmail);
 });
 
 async function loadStudentData() {
@@ -22,8 +25,38 @@ async function loadStudentData() {
     }
 }
 
+// Function to validate the email field
+function validateEmail() {
+    const emailInput = document.getElementById("email-input");
+    const emailError = document.getElementById("email-error");
+    const emailValue = emailInput.value;
+
+    // Regular expression for email validation
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    // Check if email is empty or not in a valid format
+    if (!emailValue) {
+        emailError.textContent = "Email is required.";
+        emailError.style.display = "flex";
+        return false;
+    } else if (!emailRegex.test(emailValue)) {
+        emailError.textContent = "Please enter a valid email address (e.g., example@domain.com).";
+        emailError.style.display = "flex";
+        return false;
+    } else {
+        emailError.style.display = "none";
+        return true;
+    }
+}
+
 // Handle form submission to save changes
 document.querySelector(".submit-button button").addEventListener("click", async () => {
+    // Validate email before submission
+    if (!validateEmail()) {
+        alert("Please correct the errors in the form.");
+        return; // Prevent form submission if email is invalid
+    }
+
     const updatedStudent = {
         first_name: document.getElementById("first-name-input").value,
         last_name: document.getElementById("last-name-input").value,
