@@ -108,6 +108,16 @@ function validateForm () {
   );
 }
 
+// Function to validate the first name field
+function validateFirstName() {
+  // Code to validate the first name field
+}
+
+// Function to validate the last name field
+function validateLastName() {
+  // Code to validate the last name field
+}
+
 // Function to validate the email field
 function validateEmail() {
   const emailInput = document.getElementById("email-input");
@@ -157,4 +167,29 @@ function validatePhoneNumber() {
     phoneError.style.display = "none";
     return true;
   }
+}
+
+// Function to validate the role summary field
+function validateRoleSummary() {
+  // Code to validate the role summary field
+}
+
+// Function to validate the employment info field
+function validateEmploymentInfo() {
+  // Code to validate the employment info field
+}
+
+// Function to validate the desired location field
+function validateDesiredLocation() {
+  // Code to validate the desired location field
+}
+
+// Function to validate the skills field
+function validateSkills() {
+  // Code to validate the skills field
+}
+
+// Function to validate the education history field
+function validateEducationHistory() {
+  // Code to validate the education history field
 }
