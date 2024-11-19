@@ -1,15 +1,26 @@
+const allLocations = [
+  "New York, NY",
+  "Los Angeles, CA",
+  "Chicago, IL",
+  "Houston, TX",
+  "Phoenix, AZ",
+  "Dallas, TX",
+];
+
 const studentDataAPI = "http://localhost:3000/students/1";
 
 document.addEventListener("DOMContentLoaded", async () => {
   await loadStudentData();
 
   // Add event listener for each input field to validate on input
-  document.querySelectorAll("input").forEach(input => {
+  document.querySelectorAll("input").forEach((input) => {
     input.addEventListener("input", () => {
       if (input.id === "email-input") {
         validateEmail();
       } else if (input.id === "phone-number-input") {
         validatePhoneNumber();
+      } else if (input.id === "desired-location-input") {
+        validateDesiredLocation();
       }
     });
   });
@@ -27,12 +38,44 @@ async function loadStudentData() {
     document.getElementById("phone-number-input").value = student.phone;
     document.getElementById("role-summary-input").value = student.role_summary;
     document.getElementById("employment-info-input").value = student.employers;
-    document.getElementById("desired-location-input").value = student.desired_locations;
+    const desiredLocations = student.desired_locations.split(" - ");
+    populateDesiredLocations(desiredLocations);
     document.getElementById("skills-input").value = student.skills;
-    document.getElementById("education-history-input").value = student.education_history;
+    document.getElementById("education-history-input").value =
+      student.education_history;
   } catch (error) {
     console.error("Error loading student data:", error);
   }
+}
+
+// Populate the desired locations section with chips for existing locations
+function populateDesiredLocations(locations) {
+  const desiredLocationContainer = document.getElementById(
+    "desired-location-container"
+  );
+  desiredLocationContainer.innerHTML = ""; // Clear existing items
+
+  if (!Array.isArray(locations) && locations.length === 0) {
+    const noLocation = document.createElement("span");
+    noLocation.textContent = "No location selected";
+    desiredLocationContainer.appendChild(noLocation);
+    return;
+  }
+
+  locations.forEach((location) => {
+    const locationChip = document.createElement("span");
+    locationChip.classList.add("location-chip");
+    locationChip.textContent = location;
+
+    const removeBtn = document.createElement("button");
+    removeBtn.textContent = "×";
+    removeBtn.onclick = () => {
+      locationChip.remove();
+      // Optionally, remove location from the data object or send an update to the backend
+    };
+    locationChip.appendChild(removeBtn);
+    desiredLocationContainer.appendChild(locationChip);
+  });
 }
 
 // Handle form submission to save changes
@@ -81,7 +124,7 @@ document
   });
 
 // Function to validate the entire form
-function validateForm () {
+function validateForm() {
   // TODO: Add validation for all fields, then uncomment the lines below
 
   // const firstNameValid = validateFirstName();
@@ -97,8 +140,7 @@ function validateForm () {
   return (
     // firstNameValid &&
     // lastNameValid &&
-    emailValid &&
-    phoneNumberValid 
+    emailValid && phoneNumberValid
     // &&
     // roleSummaryValid &&
     // employmentInfoValid &&
@@ -149,12 +191,38 @@ function validatePhoneNumber() {
     return false;
   }
   // Check if phone number meets format and length requirements
-  else if (!phoneRegex.test(phoneValue) || phoneValue.replace(/\D/g, "").length < 10) {
-    phoneError.textContent = "Please enter a valid phone number (e.g., 123-456-7890)";
+  else if (
+    !phoneRegex.test(phoneValue) ||
+    phoneValue.replace(/\D/g, "").length < 10
+  ) {
+    phoneError.textContent =
+      "Please enter a valid phone number (e.g., 123-456-7890)";
     phoneError.style.display = "flex";
     return false;
   } else {
     phoneError.style.display = "none";
+    return true;
+  }
+}
+
+// Validate desired location input
+function validateDesiredLocation() {
+  const desiredLocationInput = document.getElementById(
+    "desired-location-input"
+  );
+  const locationError = document.getElementById("desired-location-error");
+  const locationValue = desiredLocationInput.value.trim();
+
+  if (!locationValue) {
+    locationError.textContent = "Location is required.";
+    locationError.style.display = "flex";
+    return false;
+  } else if (!allLocations.includes(locationValue)) {
+    locationError.textContent = "Please select a location from the list.";
+    locationError.style.display = "flex";
+    return false;
+  } else {
+    locationError.style.display = "none";
     return true;
   }
 }

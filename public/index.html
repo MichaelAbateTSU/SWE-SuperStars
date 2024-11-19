@@ -42,8 +42,18 @@
       <textarea class="grid-item" id="employment-info-input"></textarea>
 
       <!-- Desired Location -->
-      <div class="grid-item" id="desired-location-label">Desired Location:</div>
-      <input type="text" class="grid-item" id="desired-location-input">
+      <div class="grid-item">
+        <div id="desired-location-label">Desired Location:</div>
+        <div class="error-message" id="desired-location-error" style="display: none;"></div>
+      </div>
+      <div class="grid-item">
+        <!-- Multi-select dropdown for desired locations -->
+        <select id="desired-location-input" multiple>
+          <!-- Options will be dynamically added via JavaScript -->
+        </select>
+
+        <div id="desired-location-container"></div>
+      </div>
 
       <!-- Skills -->
       <div class="grid-item" id="skills-label">Skills:</div>
