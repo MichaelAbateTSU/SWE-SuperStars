@@ -156,9 +156,7 @@ function validateForm() {
   return (
     // firstNameValid &&
     // lastNameValid &&
-    emailValid && phoneNumberValid && desiredLocationValid
-    // &&
-    // roleSummaryValid &&
+    emailValid && phoneNumberValid && desiredLocationValid && roleSummaryValid //&&
     // employmentInfoValid &&
     // skillsValid &&
     // educationHistoryValid
@@ -267,7 +265,31 @@ function validateDesiredLocation() {
 
 // Function to validate the role summary field
 function validateRoleSummary() {
-  // Code to validate the role summary field
+  const roleSummaryInput = document.getElementById("role-summary-input");
+  const roleSummaryError = document.getElementById("role-summary-error");
+  const roleSummaryValue = roleSummaryInput.value.trim();
+
+  // Regular expression to allow alphanumeric characters, spaces, and standard punctuation
+  const roleSummaryRegex = /^[a-zA-Z0-9\s.,'?!-]+$/;
+
+  if (!roleSummaryValue) {
+    roleSummaryError.textContent = "Role summary is required.";
+    roleSummaryError.style.display = "flex";
+    return false;
+  } else if (roleSummaryValue.length < 10 || roleSummaryValue.length > 200) {
+    roleSummaryError.textContent =
+      "Role summary must be between 10 and 200 characters.";
+    roleSummaryError.style.display = "flex";
+    return false;
+  } else if (!roleSummaryRegex.test(roleSummaryValue)) {
+    roleSummaryError.textContent =
+      "Role summary contains invalid characters. Please use only letters, numbers, spaces, and standard punctuation.";
+    roleSummaryError.style.display = "flex";
+    return false;
+  } else {
+    roleSummaryError.style.display = "none";
+    return true;
+  }
 }
 // Function to validate the employment info field
 function validateEmploymentInfo() {
@@ -318,3 +340,8 @@ function addLocationChip(locationValue = null) {
   amountOfLocations++;
   validateDesiredLocation();
 }
+
+
+
+
+
