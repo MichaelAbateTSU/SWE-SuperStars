@@ -1,6 +1,10 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Lobster", cursive;
   font-weight: bold;
+  background: linear-gradient(to right, white, blue);
+  height: 100vh;
+  margin: 0;
+  font-size: 18px;
 }
 
 .top-container {
@@ -13,6 +17,7 @@ body {
 
 .top-container h1 {
   align-self: center;
+  font-size: 40px;
 }
 
 .grid-container {
@@ -25,14 +30,12 @@ body {
 
 .grid-item {
   padding: 10px;
-  font-size: 16px;
   text-align: left;
 }
 
 input[type="text"],
 textarea {
   padding: 10px;
-  font-size: 16px;
   width: 100%;
   box-sizing: border-box;
 }
@@ -46,7 +49,6 @@ textarea {
 
 button {
   padding: 10px 20px;
-  font-size: 16px;
   cursor: pointer;
 }
 
@@ -55,6 +57,7 @@ button {
   justify-content: flex-end;
   width: 100%;
   padding: 30px;
+  margin-right: 100px;
 }
 
 .submit-button button {
@@ -79,6 +82,7 @@ button {
   margin: 5px;
   font-size: 14px;
   padding: 5px;
+  background-color: white;
 }
 
 .remove-btn {

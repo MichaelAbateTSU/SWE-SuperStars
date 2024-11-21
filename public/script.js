@@ -9,7 +9,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   // Add event listener for each input field to validate on input
   document.querySelectorAll("input").forEach((input) => {
     input.addEventListener("input", () => {
-      validateForm();
       toggleSubmitButton(); // Update button state on input change
     });
   });
