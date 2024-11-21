@@ -30,15 +30,16 @@ function toggleSubmitButton() {
   const submitButton = document.querySelector(".submit-button button");
 
   if (validateForm()) {
-    submitButton.style.backgroundColor = "black";
-    submitButton.style.cursor = "pointer";
     submitButton.disabled = false;
+    submitButton.style.backgroundColor = "black"; // Optional: for visual cues
+    submitButton.style.cursor = "pointer";
   } else {
-    submitButton.style.backgroundColor = "#6c757d";
-    submitButton.style.cursor = "not-allowed";
     submitButton.disabled = true;
+    submitButton.style.backgroundColor = "#6c757d"; // Optional: for visual cues
+    submitButton.style.cursor = "not-allowed";
   }
 }
+
 
 async function loadStudentData() {
   try {
@@ -147,7 +148,7 @@ function validateForm() {
   // const lastNameValid = validateLastName();
   const emailValid = validateEmail();
   const phoneNumberValid = validatePhoneNumber();
-  // const roleSummaryValid = validateRoleSummary();
+  const roleSummaryValid = validateRoleSummary();
   // const employmentInfoValid = validateEmploymentInfo();
   const desiredLocationValid = validateDesiredLocation();
   // const skillsValid = validateSkills();
