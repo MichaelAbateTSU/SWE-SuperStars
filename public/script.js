@@ -1,30 +1,45 @@
-const allLocations = [
-  "New York, NY",
-  "Los Angeles, CA",
-  "Chicago, IL",
-  "Houston, TX",
-  "Phoenix, AZ",
-  "Dallas, TX",
-];
-
 const studentDataAPI = "http://localhost:3000/students/1";
+let amountOfLocations = 0;
 
 document.addEventListener("DOMContentLoaded", async () => {
   await loadStudentData();
+  validateForm(); // Initial validation
+  toggleSubmitButton(); // Ensure the submit button is in the correct state on load
 
   // Add event listener for each input field to validate on input
   document.querySelectorAll("input").forEach((input) => {
     input.addEventListener("input", () => {
-      if (input.id === "email-input") {
-        validateEmail();
-      } else if (input.id === "phone-number-input") {
-        validatePhoneNumber();
-      } else if (input.id === "desired-location-input") {
-        validateDesiredLocation();
-      }
+      validateForm();
+      toggleSubmitButton(); // Update button state on input change
     });
   });
+
+  // Add event listener for adding a desired location chip
+  document
+    .getElementById("confirm-desired-location")
+    .addEventListener("click", () => {
+      addLocationChip();
+      toggleSubmitButton(); // Update button state after adding a location
+      // clear the input field after adding a location and hide the confirm button
+      document.getElementById("desired-location-input").value = "";
+      document.getElementById("confirm-desired-location").style.display =
+        "none";
+    });
 });
+
+function toggleSubmitButton() {
+  const submitButton = document.querySelector(".submit-button button");
+
+  if (validateForm()) {
+    submitButton.style.backgroundColor = "black";
+    submitButton.style.cursor = "pointer";
+    submitButton.disabled = false;
+  } else {
+    submitButton.style.backgroundColor = "#6c757d";
+    submitButton.style.cursor = "not-allowed";
+    submitButton.disabled = true;
+  }
+}
 
 async function loadStudentData() {
   try {
@@ -48,34 +63,20 @@ async function loadStudentData() {
   }
 }
 
-// Populate the desired locations section with chips for existing locations
-function populateDesiredLocations(locations) {
+function populateDesiredLocations(locations = []) {
   const desiredLocationContainer = document.getElementById(
     "desired-location-container"
   );
   desiredLocationContainer.innerHTML = ""; // Clear existing items
 
-  if (!Array.isArray(locations) && locations.length === 0) {
+  if (locations.length === 0) {
     const noLocation = document.createElement("span");
     noLocation.textContent = "No location selected";
     desiredLocationContainer.appendChild(noLocation);
     return;
   }
 
-  locations.forEach((location) => {
-    const locationChip = document.createElement("span");
-    locationChip.classList.add("location-chip");
-    locationChip.textContent = location;
-
-    const removeBtn = document.createElement("button");
-    removeBtn.textContent = "×";
-    removeBtn.onclick = () => {
-      locationChip.remove();
-      // Optionally, remove location from the data object or send an update to the backend
-    };
-    locationChip.appendChild(removeBtn);
-    desiredLocationContainer.appendChild(locationChip);
-  });
+  locations.forEach((location) => addLocationChip(location));
 }
 
 // Handle form submission to save changes
@@ -97,8 +98,7 @@ document
       phone: document.getElementById("phone-number-input").value,
       role_summary: document.getElementById("role-summary-input").value,
       employers: document.getElementById("employment-info-input").value,
-      desired_locations: document.getElementById("desired-location-input")
-        .value,
+      desired_locations: getDesiredLocations(),
       skills: document.getElementById("skills-input").value,
       education_history: document.getElementById("education-history-input")
         .value,
@@ -123,6 +123,23 @@ document
     }
   });
 
+function getDesiredLocations() {
+  const locationChips = document.querySelectorAll(".location-chip");
+  const locations = [];
+
+  locationChips.forEach((chip) => {
+    const removeBtn = chip.querySelector(".remove-btn");
+    if (removeBtn) {
+      removeBtn.remove(); // Remove the remove button before saving
+    }
+    locations.push(chip.textContent);
+    // Add the remove button back to the chip for UI
+    chip.appendChild(removeBtn);
+  });
+
+  return locations.join(" - ");
+}
+
 // Function to validate the entire form
 function validateForm() {
   // TODO: Add validation for all fields, then uncomment the lines below
@@ -133,18 +150,17 @@ function validateForm() {
   const phoneNumberValid = validatePhoneNumber();
   // const roleSummaryValid = validateRoleSummary();
   // const employmentInfoValid = validateEmploymentInfo();
-  // const desiredLocationValid = validateDesiredLocation();
+  const desiredLocationValid = validateDesiredLocation();
   // const skillsValid = validateSkills();
   // const educationHistoryValid = validateEducationHistory();
 
   return (
     // firstNameValid &&
     // lastNameValid &&
-    emailValid && phoneNumberValid
+    emailValid && phoneNumberValid && desiredLocationValid
     // &&
     // roleSummaryValid &&
     // employmentInfoValid &&
-    // desiredLocationValid &&
     // skillsValid &&
     // educationHistoryValid
   );
@@ -207,22 +223,73 @@ function validatePhoneNumber() {
 
 // Validate desired location input
 function validateDesiredLocation() {
+  const desiredLocationContainer = document.getElementById(
+    "desired-location-container"
+  );
   const desiredLocationInput = document.getElementById(
     "desired-location-input"
   );
-  const locationError = document.getElementById("desired-location-error");
-  const locationValue = desiredLocationInput.value.trim();
+  const confirmLocationBtn = document.getElementById(
+    "confirm-desired-location"
+  );
 
-  if (!locationValue) {
+  const locationValue = desiredLocationInput.value.trim();
+  const locationError = document.getElementById("desired-location-error");
+
+  if (locationValue.length > 3) {
+    confirmLocationBtn.style.display = "flex";
+  } else {
+    confirmLocationBtn.style.display = "none";
+  }
+
+  if (amountOfLocations === 0) {
     locationError.textContent = "Location is required.";
     locationError.style.display = "flex";
     return false;
-  } else if (!allLocations.includes(locationValue)) {
-    locationError.textContent = "Please select a location from the list.";
+  } else if (amountOfLocations === 6) {
+    locationError.textContent =
+      "You can only enter up to 5 locations, please remove some before submitting.";
     locationError.style.display = "flex";
     return false;
   } else {
     locationError.style.display = "none";
     return true;
   }
+}
+
+function addLocationChip(locationValue = null) {
+  const desiredLocationInput = document.getElementById(
+    "desired-location-input"
+  );
+  const desiredLocationContainer = document.getElementById(
+    "desired-location-container"
+  );
+
+  if (!locationValue) locationValue = desiredLocationInput.value.trim();
+  if (!locationValue) return;
+
+  if (amountOfLocations >= 5) {
+    alert("You can only enter up to 5 locations.");
+    return;
+  }
+
+  const locationChip = document.createElement("span");
+  locationChip.classList.add("location-chip");
+  locationChip.textContent = locationValue;
+
+  const removeBtn = document.createElement("button");
+  removeBtn.classList.add("remove-btn");
+  removeBtn.textContent = "X";
+  removeBtn.onclick = () => {
+    locationChip.remove();
+    amountOfLocations--;
+    validateDesiredLocation();
+    toggleSubmitButton(); // Update button state after removing a location
+  };
+
+  locationChip.appendChild(removeBtn);
+  desiredLocationContainer.appendChild(locationChip);
+  if (!locationValue) desiredLocationInput.value = "";
+  amountOfLocations++;
+  validateDesiredLocation();
 }

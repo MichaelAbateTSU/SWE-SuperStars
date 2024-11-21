@@ -43,15 +43,17 @@
 
       <!-- Desired Location -->
       <div class="grid-item">
-        <div id="desired-location-label">Desired Location:</div>
+        <div id="desired-location-label">Desired Locations:</div>
         <div class="error-message" id="desired-location-error" style="display: none;"></div>
       </div>
       <div class="grid-item">
         <!-- Multi-select dropdown for desired locations -->
-        <select id="desired-location-input" multiple>
-          <!-- Options will be dynamically added via JavaScript -->
-        </select>
-
+        <div id="desired-location-input-container">
+          <input id="desired-location-input">
+          <button id="confirm-desired-location" style="display: none;">
+            Confirm
+          </button>
+        </div>
         <div id="desired-location-container"></div>
       </div>
 

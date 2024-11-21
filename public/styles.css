@@ -69,3 +69,26 @@ button {
   padding: 10px;
   padding-left: 0px;
 }
+
+.location-chip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 5px;
+  margin: 5px;
+  font-size: 14px;
+  padding: 5px;
+}
+
+.remove-btn {
+  color: red;
+  background-color: transparent;
+}
+
+#desired-location-input-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
