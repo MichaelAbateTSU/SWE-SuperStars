@@ -251,7 +251,7 @@ function validateDesiredLocation() {
   }
 
   if (amountOfLocations === 0) {
-    locationError.textContent = "Location is required.";
+    locationError.textContent = "At least one location is required.";
     locationError.style.display = "flex";
     return false;
   } else if (amountOfLocations === 6) {
