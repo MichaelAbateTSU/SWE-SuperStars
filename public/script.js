@@ -1,8 +1,11 @@
 const studentDataAPI = "http://localhost:3000/students/1";
+const cityDataAPI = "http://localhost:3000/cities";
 let amountOfLocations = 0;
+let citiesAndStates = [];
 
 document.addEventListener("DOMContentLoaded", async () => {
   await loadStudentData();
+  await fetchCityData();
   validateForm(); // Initial validation
   toggleSubmitButton(); // Ensure the submit button is in the correct state on load
 
@@ -40,7 +43,6 @@ function toggleSubmitButton() {
   }
 }
 
-
 async function loadStudentData() {
   try {
     const response = await fetch(studentDataAPI);
@@ -60,6 +62,19 @@ async function loadStudentData() {
       student.education_history;
   } catch (error) {
     console.error("Error loading student data:", error);
+  }
+}
+
+async function fetchCityData() {
+  try {
+    const response = await fetch(cityDataAPI);
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+    const data = await response.json();
+    citiesAndStates = data.map((city) => `${city.city}, ${city.stateISO}`);
+  } catch (error) {
+    console.error("Error fetching city data:", error);
   }
 }
 
@@ -157,12 +172,12 @@ function validateForm() {
   return (
     firstNameValid &&
     lastNameValid &&
-    emailValid && 
-    phoneNumberValid && 
-    desiredLocationValid && 
-    roleSummaryValid // &&
+    emailValid &&
+    phoneNumberValid &&
+    desiredLocationValid &&
+    roleSummaryValid && // &&
     // employmentInfoValid &&
-    && skillsValid
+    skillsValid
     // educationHistoryValid
   );
 }
@@ -181,7 +196,8 @@ function validateFirstName() {
     firstNameError.style.display = "flex";
     return false;
   } else if (!nameRegex.test(firstNameValue)) {
-    firstNameError.textContent = "First name can only contain alphabetic characters.";
+    firstNameError.textContent =
+      "First name can only contain alphabetic characters.";
     firstNameError.style.display = "flex";
     return false;
   } else if (firstNameValue.length > 150) {
@@ -208,7 +224,8 @@ function validateLastName() {
     lastNameError.style.display = "flex";
     return false;
   } else if (!nameRegex.test(lastNameValue)) {
-    lastNameError.textContent = "Last name can only contain alphabetic characters.";
+    lastNameError.textContent =
+      "Last name can only contain alphabetic characters.";
     lastNameError.style.display = "flex";
     return false;
   } else if (lastNameValue.length > 150) {
@@ -278,20 +295,17 @@ function validatePhoneNumber() {
 
 // Validate desired location input
 function validateDesiredLocation() {
-  const desiredLocationContainer = document.getElementById(
-    "desired-location-container"
-  );
   const desiredLocationInput = document.getElementById(
     "desired-location-input"
   );
+  const locationError = document.getElementById("desired-location-error");
+  const locationValue = desiredLocationInput.value.trim();
+
   const confirmLocationBtn = document.getElementById(
     "confirm-desired-location"
   );
 
-  const locationValue = desiredLocationInput.value.trim();
-  const locationError = document.getElementById("desired-location-error");
-
-  if (locationValue.length > 3) {
+  if (locationValue.length > 2 && citiesAndStates.includes(locationValue)) {
     confirmLocationBtn.style.display = "flex";
   } else {
     confirmLocationBtn.style.display = "none";
@@ -301,9 +315,9 @@ function validateDesiredLocation() {
     locationError.textContent = "At least one location is required.";
     locationError.style.display = "flex";
     return false;
-  } else if (amountOfLocations === 6) {
+  } else if (locationValue && !citiesAndStates.includes(locationValue)) {
     locationError.textContent =
-      "You can only enter up to 5 locations, please remove some before submitting.";
+      "Invalid location. Please enter a valid city and state (e.g., 'Chicago, IL').";
     locationError.style.display = "flex";
     return false;
   } else {
@@ -359,7 +373,7 @@ function validateSkills() {
   }
 
   // Split the input into individual skill entries
-  const skillsArray = skillsValue.split(",").map(skill => skill.trim());
+  const skillsArray = skillsValue.split(",").map((skill) => skill.trim());
 
   // Validate the number of skills
   if (skillsArray.length > 10) {
@@ -374,7 +388,7 @@ function validateSkills() {
   for (let skill of skillsArray) {
     // Check if each skill matches the required format
     if (!skillRegex.test(skill)) {
-      skillsError.textContent = 
+      skillsError.textContent =
         "Each skill must be in the format 'SkillName: Level' (e.g., Java: 5) with levels between 1 and 5.";
       skillsError.style.display = "flex";
       return false;
@@ -406,6 +420,19 @@ function addLocationChip(locationValue = null) {
     alert("You can only enter up to 5 locations.");
     return;
   }
+  const locationChips = document.querySelectorAll(".location-chip");
+  for (let chip of locationChips) {
+    const removeBtn = chip.querySelector(".remove-btn");
+    if (removeBtn) {
+      removeBtn.remove();
+    }
+    const chipText = chip.textContent;
+    chip.appendChild(removeBtn);
+    if (chipText === locationValue) {
+      alert("This location is already added.");
+      return;
+    }
+  }
 
   const locationChip = document.createElement("span");
   locationChip.classList.add("location-chip");
@@ -427,8 +454,3 @@ function addLocationChip(locationValue = null) {
   amountOfLocations++;
   validateDesiredLocation();
 }
-
-
-
-
-
