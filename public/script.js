@@ -9,9 +9,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   validateForm(); // Initial validation
   toggleSubmitButton(); // Ensure the submit button is in the correct state on load
 
-  // Add event listener for each input field to validate on input
-  document.querySelectorAll("input").forEach((input) => {
-    input.addEventListener("input", () => {
+  // Add event listener for each input and text area field to validate on input
+  const inputFields = document.querySelectorAll("input, textarea");
+  inputFields.forEach((field) => {
+    field.addEventListener("input", () => {
       toggleSubmitButton(); // Update button state on input change
     });
   });
