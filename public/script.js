@@ -144,33 +144,81 @@ function getDesiredLocations() {
 function validateForm() {
   // TODO: Add validation for all fields, then uncomment the lines below
 
-  // const firstNameValid = validateFirstName();
-  // const lastNameValid = validateLastName();
+  const firstNameValid = validateFirstName();
+  const lastNameValid = validateLastName();
   const emailValid = validateEmail();
   const phoneNumberValid = validatePhoneNumber();
   const roleSummaryValid = validateRoleSummary();
   // const employmentInfoValid = validateEmploymentInfo();
   const desiredLocationValid = validateDesiredLocation();
-  // const skillsValid = validateSkills();
+  const skillsValid = validateSkills();
   // const educationHistoryValid = validateEducationHistory();
 
   return (
-    // firstNameValid &&
-    // lastNameValid &&
-    emailValid && phoneNumberValid && desiredLocationValid && roleSummaryValid //&&
+    firstNameValid &&
+    lastNameValid &&
+    emailValid && 
+    phoneNumberValid && 
+    desiredLocationValid && 
+    roleSummaryValid // &&
     // employmentInfoValid &&
-    // skillsValid &&
+    && skillsValid
     // educationHistoryValid
   );
 }
 
 // Function to validate the first name field
 function validateFirstName() {
-  // Code to validate the first name field
+  const firstNameInput = document.getElementById("first-name-input");
+  const firstNameError = document.getElementById("first-name-error");
+  const firstNameValue = firstNameInput.value.trim();
+
+  // Regular expression for alphabetic characters only
+  const nameRegex = /^[A-Za-z]+$/;
+
+  if (!firstNameValue) {
+    firstNameError.textContent = "First name is required.";
+    firstNameError.style.display = "flex";
+    return false;
+  } else if (!nameRegex.test(firstNameValue)) {
+    firstNameError.textContent = "First name can only contain alphabetic characters.";
+    firstNameError.style.display = "flex";
+    return false;
+  } else if (firstNameValue.length > 150) {
+    firstNameError.textContent = "First name cannot exceed 150 characters.";
+    firstNameError.style.display = "flex";
+    return false;
+  } else {
+    firstNameError.style.display = "none";
+    return true;
+  }
 }
+
 // Function to validate the last name field
 function validateLastName() {
-  // Code to validate the last name field
+  const lastNameInput = document.getElementById("last-name-input");
+  const lastNameError = document.getElementById("last-name-error");
+  const lastNameValue = lastNameInput.value.trim();
+
+  // Regular expression for alphabetic characters only
+  const nameRegex = /^[A-Za-z]+$/;
+
+  if (!lastNameValue) {
+    lastNameError.textContent = "Last name is required.";
+    lastNameError.style.display = "flex";
+    return false;
+  } else if (!nameRegex.test(lastNameValue)) {
+    lastNameError.textContent = "Last name can only contain alphabetic characters.";
+    lastNameError.style.display = "flex";
+    return false;
+  } else if (lastNameValue.length > 150) {
+    lastNameError.textContent = "Last name cannot exceed 150 characters.";
+    lastNameError.style.display = "flex";
+    return false;
+  } else {
+    lastNameError.style.display = "none";
+    return true;
+  }
 }
 
 // Function to validate the email field
@@ -296,10 +344,48 @@ function validateRoleSummary() {
 function validateEmploymentInfo() {
   // Code to validate the employment info field
 }
+
 // Function to validate the skills field
 function validateSkills() {
-  // Code to validate the skills field
+  const skillsInput = document.getElementById("skills-input");
+  const skillsError = document.getElementById("skills-error");
+  const skillsValue = skillsInput.value.trim();
+
+  // Check if the field is empty
+  if (!skillsValue) {
+    skillsError.textContent = "Skills field is required.";
+    skillsError.style.display = "flex";
+    return false;
+  }
+
+  // Split the input into individual skill entries
+  const skillsArray = skillsValue.split(",").map(skill => skill.trim());
+
+  // Validate the number of skills
+  if (skillsArray.length > 10) {
+    skillsError.textContent = "You can list a maximum of 10 skills.";
+    skillsError.style.display = "flex";
+    return false;
+  }
+
+  // Regular expression to validate skill format: "SkillName: Level"
+  const skillRegex = /^[A-Za-z0-9\s]+:\s*[1-5]$/;
+
+  for (let skill of skillsArray) {
+    // Check if each skill matches the required format
+    if (!skillRegex.test(skill)) {
+      skillsError.textContent = 
+        "Each skill must be in the format 'SkillName: Level' (e.g., Java: 5) with levels between 1 and 5.";
+      skillsError.style.display = "flex";
+      return false;
+    }
+  }
+
+  // Validation passed
+  skillsError.style.display = "none";
+  return true;
 }
+
 // Function to validate the education history field
 function validateEducationHistory() {
   // Code to validate the education history field
