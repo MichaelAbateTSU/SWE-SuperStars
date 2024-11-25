@@ -165,10 +165,10 @@ function validateForm() {
   const emailValid = validateEmail();
   const phoneNumberValid = validatePhoneNumber();
   const roleSummaryValid = validateRoleSummary();
-  // const employmentInfoValid = validateEmploymentInfo();
+  const employmentInfoValid = validateEmploymentInfo();
   const desiredLocationValid = validateDesiredLocation();
   const skillsValid = validateSkills();
-  // const educationHistoryValid = validateEducationHistory();
+  const educationHistoryValid = validateEducationHistory();
 
   return (
     firstNameValid &&
@@ -176,10 +176,10 @@ function validateForm() {
     emailValid &&
     phoneNumberValid &&
     desiredLocationValid &&
-    roleSummaryValid && // &&
-    // employmentInfoValid &&
-    skillsValid
-    // educationHistoryValid
+    roleSummaryValid &&
+    employmentInfoValid &&
+    skillsValid &&
+    educationHistoryValid
   );
 }
 
@@ -355,9 +355,42 @@ function validateRoleSummary() {
     return true;
   }
 }
+
 // Function to validate the employment info field
 function validateEmploymentInfo() {
-  // Code to validate the employment info field
+  const employmentInfoInput = document.getElementById("employment-info-input");
+  const employmentInfoError = document.getElementById("employment-info-error");
+  const employmentInfoValue = employmentInfoInput.value.trim();
+
+  // Regular expression for validating the employment information format
+  const employmentInfoRegex = /^[a-zA-Z0-9\s.,'?!-;]+$/;
+
+  // Presence Check: Ensure the Employment Info field is not empty
+  if (!employmentInfoValue) {
+    employmentInfoError.textContent = "Employment info is required.";
+    employmentInfoError.style.display = "flex";
+    return false;
+  }
+
+  // Length Validation: Minimum and maximum character limit (30-200 characters)
+  if (employmentInfoValue.length < 30 || employmentInfoValue.length > 200) {
+    employmentInfoError.textContent =
+      "Employment info must be between 30 and 200 characters.";
+    employmentInfoError.style.display = "flex";
+    return false;
+  }
+
+  // Content Validation: Ensure the employment info follows the specified format
+  if (!employmentInfoRegex.test(employmentInfoValue)) {
+    employmentInfoError.textContent =
+      "Employment info format is invalid. Ensure it follows the required format with commas and semicolons.";
+    employmentInfoError.style.display = "flex";
+    return false;
+  }
+
+  // If all validations pass
+  employmentInfoError.style.display = "none";
+  return true;
 }
 
 // Function to validate the skills field
@@ -403,7 +436,63 @@ function validateSkills() {
 
 // Function to validate the education history field
 function validateEducationHistory() {
-  // Code to validate the education history field
+  const educationHistoryInput = document.getElementById("education-history-input");
+  const educationHistoryError = document.getElementById("education-history-error");
+  const educationHistoryValue = educationHistoryInput.value.trim();
+
+  // Regex for university name (alphabetic characters, spaces, punctuation, max 100 chars)
+  const universityRegex = /^[a-zA-Z\s.,'-]{1,100}$/;
+
+  // Regex for degree validation (alphanumeric, spaces, max 50 chars)
+  const degreeRegex = /^[a-zA-Z0-9\s]{1,50}$/;
+
+  // Regex for date validation (MM/YYYY)
+  const dateRegex = /^(0[1-9]|1[0-2])\/\d{4}$/;
+
+  // Split the input into components: university name, degree, and dates
+  const components = educationHistoryValue.split(",").map((item) => item.trim());
+
+  if (components.length !== 3) {
+    educationHistoryError.textContent = "Education history must include university name, degree, and enrollment-graduation dates.";
+    educationHistoryError.style.display = "flex";
+    return false;
+  }
+
+  const [universityName, degree, dates] = components;
+
+  // Validate university name
+  if (!universityRegex.test(universityName)) {
+    educationHistoryError.textContent = "Invalid university name. Only letters, spaces, and punctuation are allowed (max 100 characters).";
+    educationHistoryError.style.display = "flex";
+    return false;
+  }
+
+  // Validate degree
+  if (!degreeRegex.test(degree)) {
+    educationHistoryError.textContent = "Invalid degree. Only alphanumeric characters and spaces are allowed (max 50 characters).";
+    educationHistoryError.style.display = "flex";
+    return false;
+  }
+
+  // Validate dates format (MM/YYYY - MM/YYYY)
+  const dateComponents = dates.split(" - ").map((date) => date.trim());
+  if (dateComponents.length !== 2 || !dateRegex.test(dateComponents[0]) || !dateRegex.test(dateComponents[1])) {
+    educationHistoryError.textContent = "Invalid dates format. Use MM/YYYY - MM/YYYY.";
+    educationHistoryError.style.display = "flex";
+    return false;
+  }
+
+  // Ensure enrollment date is earlier than graduation date
+  const [enrollmentDate, graduationDate] = dateComponents.map((date) => new Date(date));
+  if (enrollmentDate >= graduationDate) {
+    educationHistoryError.textContent = "Enrollment date must be earlier than graduation date.";
+    educationHistoryError.style.display = "flex";
+    return false;
+  }
+
+  // If all validations pass
+  educationHistoryError.style.display = "none";
+  return true;
 }
 
 function addLocationChip(locationValue = null) {
